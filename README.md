@@ -1,38 +1,101 @@
 # Subtitle Matcher
 
-Subtitle Matcher is an open source project for synchronizing subtitle files.
+Subtitle Matcher is an open source Python tool for working with subtitle files.
 
-## Goal
+The long-term goal is to combine timing from one subtitle file with text from
+another subtitle file. The project now includes foundational SRT utilities, a
+fuzzy matching engine and automatic timing synchronization primitives.
 
-This project combines:
+## Features in v0.0.1
 
-- Timing from subtitle file A
-- Text from subtitle file B
+- Python 3.12 package
+- SRT parser and writer
+- Subtitle dataclass
+- Encoding detection for:
+  - UTF-8
+  - UTF-8 BOM
+  - UTF-16 LE
+  - UTF-16 BE
+  - Windows-1252
+- Command line interface for inspecting and synchronizing SRT files
+- Fuzzy subtitle matching and automatic timing synchronization
+- Unit tests and GitHub Actions CI
+- MIT License
 
-Unlike traditional subtitle synchronization tools, Subtitle Matcher intelligently matches subtitles by timing, duration and dialogue structure.
+## Matching engine
 
-## Features (planned)
+The matching engine compares source and target subtitle cues, estimates a
+constant timing offset, scores text similarity with RapidFuzz and reports both
+paired and unmatched cues. It is available as a Python API; GUI support is not
+implemented yet.
 
-- Read SRT files
-- Automatic encoding detection
-- Intelligent subtitle matching
-- Split and merge subtitles
-- Confidence scoring
-- Conflict reporting
-- Command line interface
-- Web interface
-- Android support
+```python
+from subtitle_matcher.matching import match_subtitle_files
 
-## Status
+report = match_subtitle_files("source.srt", "target.srt")
+print(report.detected_offset)
+print(report.paired_matches)
+```
 
-🚧 Early development
+## Automatic synchronization
 
-## First test project
+Use the synchronization engine when subtitle timing has variable drift across the
+file. The reference file supplies the desired timing, while the original file
+supplies the numbering and text preserved in the corrected output.
 
-Movie:
+```bash
+subtitle-matcher sync reference.srt original.srt corrected.srt
+```
 
-How High (2001)
+The same workflow is available as a Python API:
 
-Objective:
+```python
+from subtitle_matcher.sync import synchronize_subtitle_files
 
-Use the English subtitle timing while keeping the Danish subtitle text and automatically split/merge subtitles to match the English structure.
+report = synchronize_subtitle_files("reference.srt", "original.srt", "corrected.srt")
+print(len(report.anchors))
+print(len(report.segments))
+```
+
+## Installation
+
+```bash
+python -m pip install .
+```
+
+For development, install the package in editable mode with pytest:
+
+```bash
+python -m pip install -e . pytest
+```
+
+## Usage
+
+Show information about an SRT file:
+
+```bash
+subtitle-matcher info path/to/subtitles.srt
+```
+
+Example output:
+
+```text
+encoding: UTF-8
+subtitle count: 2
+total duration: 5.000s
+average subtitle duration: 2.500s
+average characters per subtitle: 5.50
+```
+
+## Development
+
+Run the test suite:
+
+```bash
+pytest
+```
+
+## Roadmap
+
+Future versions will refine split and merge support, confidence scoring, conflict
+reporting and higher-level user interfaces.
