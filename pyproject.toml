@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "subtitle-matcher"
+version = "0.0.1"
+description = "Tools for inspecting and eventually matching subtitle files."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Subtitle Matcher contributors" }
+]
+keywords = ["subtitles", "srt", "encoding", "cli"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Multimedia :: Video",
+  "Topic :: Text Processing",
+]
+dependencies = [
+  "rapidfuzz>=3.0",
+]
+
+[project.scripts]
+subtitle-matcher = "subtitle_matcher.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/subtitle-matcher/subtitle-matcher"
+Issues = "https://github.com/subtitle-matcher/subtitle-matcher/issues"
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
