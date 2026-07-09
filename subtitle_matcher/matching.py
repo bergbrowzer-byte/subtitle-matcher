@@ -235,9 +235,7 @@ def _time_score(delta: timedelta, max_delta: timedelta) -> float:
     return max(0.0, 100.0 * (1.0 - ratio))
 
 
-def _combined_score(
-    text_score: float, time_score: float, options: MatchOptions
-) -> float:
+def _combined_score(text_score: float, time_score: float, options: MatchOptions) -> float:
     """Combine text and timing scores into one confidence value."""
     return (text_score * options.text_weight) + (time_score * options.time_weight)
 

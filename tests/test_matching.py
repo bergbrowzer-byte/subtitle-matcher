@@ -40,9 +40,7 @@ def test_matches_subtitles_with_detected_constant_offset() -> None:
     report = match_subtitles(source, target)
 
     assert report.detected_offset == timedelta(seconds=2)
-    assert [
-        match.target.index if match.target else None for match in report.matches
-    ] == [
+    assert [match.target.index if match.target else None for match in report.matches] == [
         1,
         2,
         3,
@@ -61,9 +59,7 @@ def test_handles_inserted_target_cues() -> None:
 
     report = match_subtitles(source, target)
 
-    assert [
-        match.target.index if match.target else None for match in report.matches
-    ] == [1, 3]
+    assert [match.target.index if match.target else None for match in report.matches] == [1, 3]
     assert [subtitle.index for subtitle in report.unmatched_targets] == [2]
 
 
@@ -77,9 +73,7 @@ def test_handles_missing_target_cues() -> None:
 
     report = match_subtitles(source, target)
 
-    assert [
-        match.target.index if match.target else None for match in report.matches
-    ] == [1, None, 2]
+    assert [match.target.index if match.target else None for match in report.matches] == [1, None, 2]
     assert report.matches[1].confidence == 0
     assert report.matches[1].time_delta is None
 

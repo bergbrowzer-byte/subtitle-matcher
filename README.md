@@ -5,6 +5,8 @@ Subtitle Matcher is an open source Python tool for working with subtitle files.
 The long-term goal is to combine timing from one subtitle file with text from
 another subtitle file. The project now includes foundational SRT utilities, a
 fuzzy matching engine and automatic timing synchronization primitives.
+another subtitle file. Version 0.0.1 intentionally focuses on a reliable project
+foundation and SRT inspection utilities; subtitle matching is not implemented yet.
 
 ## Features in v0.0.1
 
@@ -19,6 +21,7 @@ fuzzy matching engine and automatic timing synchronization primitives.
   - Windows-1252
 - Command line interface for inspecting and synchronizing SRT files
 - Fuzzy subtitle matching and automatic timing synchronization
+- Command line interface for inspecting SRT files
 - Unit tests and GitHub Actions CI
 - MIT License
 
@@ -71,6 +74,20 @@ python -m pip install -e . pytest
 
 ## Usage
 
+## Installation
+
+```bash
+python -m pip install .
+```
+
+For development, install the package in editable mode with pytest:
+
+```bash
+python -m pip install -e . pytest
+```
+
+## Usage
+
 Show information about an SRT file:
 
 ```bash
@@ -99,3 +116,6 @@ pytest
 
 Future versions will refine split and merge support, confidence scoring, conflict
 reporting and higher-level user interfaces.
+Future versions will focus on matching subtitle timing from file A with subtitle
+text from file B, including split and merge support, confidence scoring and
+conflict reporting.
