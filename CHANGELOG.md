@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Core subtitle matching engine with offset detection, RapidFuzz scoring, missing cue
   handling and inserted cue reporting.
+- Automatic subtitle synchronization engine with variable drift correction, segment
+  estimation, interpolation and corrected SRT output.
 
 ## [0.0.1] - 2026-07-06
 

@@ -25,9 +25,25 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--version", action="version", version="subtitle-matcher 0.0.1")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    info_parser = subparsers.add_parser("info", help="Show summary information for an SRT file")
+    info_parser = subparsers.add_parser(
+        "info", help="Show summary information for an SRT file"
+    )
     info_parser.add_argument("file", type=Path, help="SRT file to inspect")
     info_parser.set_defaults(func=_info_command)
+
+    sync_parser = subparsers.add_parser(
+        "sync", help="Synchronize an SRT file against a reference SRT file"
+    )
+    sync_parser.add_argument(
+        "reference", type=Path, help="SRT file with desired timing"
+    )
+    sync_parser.add_argument(
+        "original", type=Path, help="SRT file with text to preserve"
+    )
+    sync_parser.add_argument(
+        "output", type=Path, help="Path for the corrected SRT file"
+    )
+    sync_parser.set_defaults(func=_sync_command)
 
     return parser
 
@@ -45,6 +61,18 @@ def _info_command(args: argparse.Namespace) -> int:
     print(f"total duration: {_format_duration(total_duration)}")
     print(f"average subtitle duration: {_format_duration(average_duration)}")
     print(f"average characters per subtitle: {average_characters:.2f}")
+    return 0
+
+
+def _sync_command(args: argparse.Namespace) -> int:
+    """Synchronize subtitle timing and write a corrected SRT file."""
+    from subtitle_matcher.sync import synchronize_subtitle_files
+
+    report = synchronize_subtitle_files(args.reference, args.original, args.output)
+    print(f"anchors: {len(report.anchors)}")
+    print(f"segments: {len(report.segments)}")
+    print(f"corrected subtitles: {len(report.corrected_subtitles)}")
+    print(f"output: {args.output}")
     return 0
 
 
