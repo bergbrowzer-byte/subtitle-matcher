@@ -254,7 +254,10 @@ def _within_anchor_search_window(
 
 def _correct_time(time: timedelta, anchors: list[SyncAnchor]) -> timedelta:
     """Apply interpolated correction to a timestamp and clamp at zero."""
-    return max(timedelta(), time + interpolate_correction(time, anchors))
+    corrected = max(timedelta(), time + interpolate_correction(time, anchors))
+
+    milliseconds = round(corrected.total_seconds() * 1000)
+    return timedelta(milliseconds=milliseconds)
 
 
 def _interpolate_between(
